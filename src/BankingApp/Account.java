@@ -58,11 +58,13 @@ public class Account {
     private String username;
     private String password;
 
-    public Account(String fullName, String contact, long accountNo, String username, String password) {
+    public Account(String fullName, String contact) {
         this.fullName = fullName;
         this.contact = contact;
-        this.accountNo = accountNo;
-        this.username = username;
-        this.password = password;
+        generateAccountNo();
+    }
+
+    private void generateAccountNo(){
+        this.accountNo = (long)(Math.random()*Math.pow(10,10));
     }
 }
