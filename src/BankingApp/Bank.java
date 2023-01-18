@@ -1,10 +1,18 @@
 package BankingApp;
 
 import java.util.ArrayList;
-import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Bank implements IBank{
+    public Account getCurrentUser() {
+        return currentUser;
+    }
+
+    public void setCurrentUser(Account currentUser) {
+        this.currentUser = currentUser;
+    }
+
+    private Account currentUser;
     private ArrayList<Account> accounts = new ArrayList<Account>();
     @Override
     public long createAccount(String fullName, String contact) throws AccountAlreadyExistsException {
@@ -27,7 +35,20 @@ public class Bank implements IBank{
 
     @Override
     public boolean loginUser(String username, String password) {
-        return false;
+        AtomicBoolean success = new AtomicBoolean(false);
+        accounts.forEach(a -> {
+            if (a.getUsername().equals(username) && a.getPassword().equals(password)){
+                success.set(true);
+                this.currentUser = a;
+            }
+        });
+        return success.get();
+    }
+
+    @Override
+    public void logoutUser() {
+        this.currentUser = null;
+        System.out.println("User logged out successfully");
     }
 
     @Override

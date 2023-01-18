@@ -32,6 +32,46 @@ public class Main {
                 }
 
             }
+            else if(option==2){
+                System.out.println("Username : ");
+                String username = scanner.next();
+                System.out.println("Password :");
+                String password = scanner.next();
+                boolean success = bank.loginUser(username,password);
+                if (success){
+                    printLoggedInUserMenu();
+                    int accountOptions = scanner.nextInt();
+                    scanner.nextLine();
+                    while (accountOptions != 4){
+                        switch (accountOptions){
+                            case 1:
+                                System.out.println("Enter amount to deposit");
+                                long amountToDeposit = scanner.nextLong();
+                                bank.depositToAccount(amountToDeposit,bank.getCurrentUser().getAccountNo());
+                                break;
+                            case 2:
+                                System.out.println("Enter amount to withdraw");
+                                long amountToWithdraw = scanner.nextLong();
+                                bank.withdrawFromAccount(amountToWithdraw,bank.getCurrentUser().getAccountNo());
+                                break;
+                            case 3:
+                                long balance = bank.checkBalanceOfAccount(bank.getCurrentUser().getAccountNo());
+                                System.out.println("Your total balance is : " + balance );
+                                break;
+                            default:
+                                System.out.println("Please select from available options");
+                                printLoggedInUserMenu();
+                                accountOptions = scanner.nextInt();
+                                scanner.nextLine();
+                        }
+                    }
+                    bank.logoutUser();
+
+
+                }else{
+                    System.out.println("Username or Password incorrect");
+                }
+            }
             else{
                 System.out.println("Please select from available options");
 
@@ -40,6 +80,14 @@ public class Main {
             option = scanner.nextInt();
         }
         System.out.println("Thank you for chosing Emirates NBD");
+    }
+
+    private static void printLoggedInUserMenu() {
+        System.out.println("=========== Welcome to your account ============");
+        System.out.println("1. Deposit");
+        System.out.println("2. Withdraw");
+        System.out.println("3. Check Balance");
+        System.out.println("4. Log Out");
     }
 
     private static void printMainMenuMessage() {
